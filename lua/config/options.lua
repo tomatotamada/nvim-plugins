@@ -24,3 +24,19 @@ vim.opt.termguicolors = true
 --縦横ラインの表示
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
+
+--エラーのアイコンを定義
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+	local hl = "DiagnosticSign" .. type
+	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+-- 診断表示の設定
+vim.diagnostic.config({
+	virtual_text = true, -- 仮想テキストを表示
+	signs = true, -- サインを表示
+	underline = true, -- 下線を表示
+	update_in_insert = false, -- 挿入モードでの更新を無効化
+	severity_sort = true, -- 深刻度でソート
+})

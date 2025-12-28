@@ -29,6 +29,7 @@ return {
 		},
 		build = "make tiktoken", -- チャットの応答速度を上げる
 		opts = {
+			system_prompt = "回答は全て日本語で行ってください。", -- システムプロンプトの設定",
 			window = {
 				layout = "float", -- 'vertical' にすると画面分割、'float' だと浮く
 				width = 0.5, -- 幅の広さ
