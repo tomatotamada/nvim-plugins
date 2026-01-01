@@ -3,6 +3,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		branch = "main",
 		build = ":TSUpdate", -- インストール時にパーサーを更新する
+		event = { "BufReadPost", "BufReadPost" }, -- 遅延読み込み
 		config = function()
 			local configs = require("nvim-treesitter.config")
 
@@ -19,6 +20,7 @@ return {
 					"cpp",
 					"bash",
 					"markdown", -- よく使うもの
+					"tex",
 				},
 
 				-- 同期インストール（false推奨）
