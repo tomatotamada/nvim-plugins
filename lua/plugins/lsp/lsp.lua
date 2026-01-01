@@ -1,19 +1,17 @@
---lsp
 return {
 	{
-		"williamboman/mason.nvim",
+		"neovim/nvim-lspconfig", -- ★ここを Mason から Lspconfig に変更！
+		event = { "BufReadPre", "BufNewFile" }, -- ファイルを開いた瞬間に起動させる
 		dependencies = {
+			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			"neovim/nvim-lspconfig",
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
-			-- 1. Mason（インストーラー）のセットアップ
+			-- 1. Mason（インストーラー）を先にセットアップ
 			require("mason").setup()
 
-			-- ★ここが最重要ポイント！
-			-- サーバーのリストをここで「変数」として作ります。
-			-- これがあるから、下のループでエラーになりません。
+			-- 使用するサーバーリスト
 			local servers = {
 				"lua_ls",
 				"pyright",
@@ -26,28 +24,44 @@ return {
 				"taplo",
 			}
 
-			-- 2. Mason-LSPConfig のセットアップ
-			require("mason-lspconfig").setup({
-				-- ここでさっき作った変数(servers)を使います
-				ensure_installed = servers,
-				automatic_installation = true,
-			})
-
-			-- 3. 各サーバーの起動設定（手動ループ方式）
-			-- setup_handlers はバグの原因になるので使いません。
-			-- 代わりに、標準的な「for文」で回します。これなら確実に動きます。
-
-			local lspconfig = require("lspconfig")
+			-- 共通の capabilities
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			for _, server in ipairs(servers) do
-				-- もしサーバー設定が存在すればセットアップを実行
-				if lspconfig[server] then
-					lspconfig[server].setup({
-						capabilities = capabilities,
-					})
-				end
-			end
+			-- 2. Mason-LSPConfig で一括設定（handlers使用）
+			require("mason-lspconfig").setup({
+				ensure_installed = servers,
+				automatic_installation = true,
+
+				handlers = {
+					-- (A) 普通のサーバー用の設定
+					function(server_name)
+						require("lspconfig")[server_name].setup({
+							capabilities = capabilities,
+						})
+					end,
+
+					-- (B) TexLab (LaTeX) 専用の設定
+					["texlab"] = function()
+						require("lspconfig").texlab.setup({
+							capabilities = capabilities,
+							single_file_support = true,
+							settings = {
+								texlab = {
+									build = {
+										onSave = false,
+										forwardSearchAfter = false,
+									},
+									chktex = {
+										onOpenAndSave = true,
+										onEdit = false,
+									},
+									formatterLineLength = 80,
+								},
+							},
+						})
+					end,
+				},
+			})
 		end,
 	},
 }

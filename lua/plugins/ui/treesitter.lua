@@ -20,7 +20,7 @@ return {
 					"cpp",
 					"bash",
 					"markdown", -- よく使うもの
-					"tex",
+					"latex",
 				},
 
 				-- 同期インストール（false推奨）

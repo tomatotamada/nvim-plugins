@@ -6,6 +6,13 @@ return {
 			-- chunk: 今いるブロックを強調する設定
 			chunk = {
 				enable = true,
+				support_filetypes = {
+					tex,
+					latex,
+					plaintext,
+					bib,
+					-- 必要に応じて他のファイルタイプも追加できます
+				},
 				-- ここで見た目を調整できます
 				style = {
 					{ fg = "#806d9c" }, -- カッコの色（紫系）
