@@ -21,6 +21,15 @@ return {
 					"bash",
 					"markdown", -- よく使うもの
 					"latex",
+					"astro",
+					"css",
+					"html",
+					"javascript",
+					"json",
+					"typescript",
+					"tsx",
+					"markdown",
+					"markdown_inline",
 				},
 
 				-- 同期インストール（false推奨）

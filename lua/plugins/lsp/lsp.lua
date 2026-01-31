@@ -22,6 +22,8 @@ return {
 				"texlab",
 				"yamlls",
 				"taplo",
+				"astro",
+				"tailwindcss",
 			}
 
 			-- 共通の capabilities
