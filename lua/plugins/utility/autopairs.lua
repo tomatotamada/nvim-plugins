@@ -1,24 +1,14 @@
 return {
-  "stevearc/conform.nvim",
-  event = { "BufWritePre" }, -- 保存する直前に実行
-  cmd = { "ConformInfo" },
-  config = function()
-    require("conform").setup({
-      -- 言語ごとのフォーマッター設定
-      formatters_by_ft = {
-        lua = { "stylua" },
-        python = { "isort", "black" }, -- Pythonはこれらが定番
-        javascript = { "prettier" },
-        typescript = { "prettier" },
-        html = { "prettier" },
-        css = { "prettier" },
-        json = { "prettier" },
-      },
-      -- 保存時に自動整形する設定
-      format_on_save = {
-        timeout_ms = 500, -- 0.5秒で終わらなければ諦める（フリーズ防止）
-        lsp_fallback = true, -- フォーマッターがない時はLSPに頼る
-      },
-    })
-  end,
+	"windwp/nvim-autopairs",
+	event = "InsertEnter",
+	config = function()
+		require("nvim-autopairs").setup({
+			check_ts = true, -- treesitterと連携（コメント内などで誤動作しにくい）
+		})
+
+		-- nvim-cmpとの連携（Enterで補完確定時に自動で括弧を追加）
+		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+		local cmp = require("cmp")
+		cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+	end,
 }
