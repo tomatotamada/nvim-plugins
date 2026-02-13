@@ -24,6 +24,7 @@ return {
 				"taplo",
 				"astro",
 				"tailwindcss",
+				"rust_analyzer",
 			}
 
 			-- 共通の capabilities
