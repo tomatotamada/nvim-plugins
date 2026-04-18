@@ -1,7 +1,7 @@
 return {
 	{
-		"neovim/nvim-lspconfig", -- ★ここを Mason から Lspconfig に変更！
-		event = { "BufReadPre", "BufNewFile" }, -- ファイルを開いた瞬間に起動させる
+		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
@@ -11,7 +11,7 @@ return {
 			-- 1. Mason（インストーラー）を先にセットアップ
 			require("mason").setup()
 
-			-- 使用するサーバーリスト
+			-- 使用するサーバーリスト（rust_analyzerはMason管理外にする）
 			local servers = {
 				"lua_ls",
 				"pyright",
@@ -24,11 +24,19 @@ return {
 				"taplo",
 				"astro",
 				"tailwindcss",
-				"rust_analyzer",
 			}
 
 			-- 共通の capabilities
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			-- rust_analyzer はnvim組み込みAPI(vim.lsp.config)で設定（Mason版はnightly/edition2024非対応のため）
+			vim.lsp.config("rust_analyzer", {
+				cmd = { "rustup", "run", "nightly", "rust-analyzer" },
+				root_markers = { "Cargo.toml", "rust-project.json" },
+				capabilities = capabilities,
+				filetypes = { "rust" },
+			})
+			vim.lsp.enable("rust_analyzer")
 
 			-- 2. Mason-LSPConfig で一括設定（handlers使用）
 			require("mason-lspconfig").setup({
@@ -42,6 +50,9 @@ return {
 							capabilities = capabilities,
 						})
 					end,
+
+					-- rust_analyzer はMason版を使わない（上でvim.lsp.configで設定済み）
+					["rust_analyzer"] = function() end,
 
 					-- (B) TexLab (LaTeX) 専用の設定
 					["texlab"] = function()

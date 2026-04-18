@@ -14,6 +14,9 @@ return {
 		local cmp = require("cmp")
 		local lspkind = require("lspkind")
 
+		-- LSP補完ソースを有効化（lazy.nvimがafter/pluginを実行しないため手動で呼ぶ）
+		require("cmp_nvim_lsp").setup()
+
 		cmp.setup({
 			-- スニペットエンジンの設定
 			snippet = {
