@@ -24,6 +24,7 @@ return {
 				"taplo",
 				"astro",
 				"tailwindcss",
+				"jsonls",
 			}
 
 			-- 共通の capabilities
