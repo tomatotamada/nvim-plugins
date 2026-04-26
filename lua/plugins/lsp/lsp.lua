@@ -25,6 +25,7 @@ return {
 				"astro",
 				"tailwindcss",
 				"jsonls",
+				"mdx_analyzer",
 			}
 
 			-- 共通の capabilities
@@ -39,6 +40,16 @@ return {
 			})
 			vim.lsp.enable("rust_analyzer")
 
+			-- mdx_analyzer もvim.lsp.configで設定（lspconfig経由だとNeovim 0.12でアタッチされない）
+			vim.lsp.config("mdx_analyzer", {
+				cmd = { "mdx-language-server", "--stdio" },
+				root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+				capabilities = capabilities,
+				filetypes = { "mdx" },
+				single_file_support = true,
+			})
+			vim.lsp.enable("mdx_analyzer")
+
 			-- 2. Mason-LSPConfig で一括設定（handlers使用）
 			require("mason-lspconfig").setup({
 				ensure_installed = servers,
@@ -52,8 +63,9 @@ return {
 						})
 					end,
 
-					-- rust_analyzer はMason版を使わない（上でvim.lsp.configで設定済み）
+					-- rust_analyzer, mdx_analyzer はMason版を使わない（上でvim.lsp.configで設定済み）
 					["rust_analyzer"] = function() end,
+					["mdx_analyzer"] = function() end,
 
 					-- (B) TexLab (LaTeX) 専用の設定
 					["texlab"] = function()

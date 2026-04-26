@@ -1,3 +1,10 @@
+-- MDXファイルタイプの認識
+vim.filetype.add({
+	extension = {
+		mdx = "mdx",
+	},
+})
+
 -- 行番号を表示
 vim.opt.number = true
 vim.opt.relativenumber = true -- 相対行番号（ジャンプしやすくなる）

@@ -30,3 +30,6 @@ vim.keymap.set("n", "<leader>bg", function()
 	end
 end, { desc = "Toggle Background Transparency" })
 
+-- ¥キーでバックスラッシュを入力する (日本語キーボード対応)
+vim.keymap.set({'i', 'c', 't'}, '¥', '\\', { noremap = true })
+

@@ -11,6 +11,11 @@ return {
 		-- コンパイラの設定 (latexmkを使用)
 		vim.g.vimtex_compiler_method = "latexmk"
 
+		-- デフォルトのエンジンをlualatexに変更
+		vim.g.vimtex_compiler_latexmk_engines = {
+			["_"] = "-lualatex",
+		}
+
 		-- ビルドごとの自動クリーンアップ（お好みで）
 		-- vim.g.vimtex_compiler_latexmk = {
 		--    options = {

@@ -30,6 +30,7 @@ return {
 					"tsx",
 					"markdown",
 					"markdown_inline",
+					"mdx",
 				},
 
 				-- 同期インストール（false推奨）
